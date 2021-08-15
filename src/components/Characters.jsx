@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useReducer, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useReducer, useMemo, useRef, useCallback } from 'react';
+import Search from './Search';
 
 const initialState = {
   favorites: []
@@ -35,9 +36,13 @@ const Characters = () => {
     })
   };
 
-  const handleSearch = () => {
-    setSearch(searchInput.current.value);
-  };
+  // const handleSearch = () => {
+  //   setSearch(searchInput.current.value);
+  // };
+
+  const handleSearch = useCallback(() => {
+    setSearch(searchInput.current.value)
+  }, [])
 
   // const filteredUsers = characters.filter(user => {
   //   return user.name.toLowerCase().includes(search.toLowerCase())
@@ -58,9 +63,7 @@ const Characters = () => {
         </li>
       ))}
 
-      <div className="Search">
-        <input type="text" value={search} ref={searchInput} onChange={handleSearch}/>
-      </div>
+      <Search search={search} searchInput={searchInput} handleSearch={handleSearch}/>
 
       {filteredUsers.map((character) => (
         <div className="item" key={character.id}>
